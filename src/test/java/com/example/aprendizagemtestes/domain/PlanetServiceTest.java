@@ -1,21 +1,29 @@
 package com.example.aprendizagemtestes.domain;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.example.aprendizagemtestes.common.PlanetConstants.PLANET;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = PlanetService.class)
+@ExtendWith(MockitoExtension.class)
 public class PlanetServiceTest {
 
-    @Autowired
+    @InjectMocks
     private PlanetService planetService;
+
+    @Mock
+    private PlanetRepository planetRepository;
 
     //operacao_estado_return
     @Test
     public void createPlanet_WithValidData_ReturnsPlanet() {
+        when(planetRepository.save(PLANET)).thenReturn(PLANET);
+
         Planet su = planetService.create(PLANET);
 
         assertThat(su).isEqualTo(PLANET);
